@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herb Agency · 2026 Sales Forecast & Budget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #1A1A1A;
+    --bg-elev: #222222;
+    --bg-elev-2: #2A2A2A;
+    --line: #333333;
+    --line-soft: #2A2A2A;
+    --accent: #C5F048;
+    --accent-dim: rgba(197, 240, 72, 0.18);
+    --text: #F5F5F5;
+    --text-mute: #9A9A9A;
+    --text-dim: #6A6A6A;
+    --pos: #C5F048;
+    --neg: #FF6B5A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 32px 48px 80px;
+  }
+  /* Top tag */
+  .top-tag {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 40px;
+  }
+  .top-tag .right { color: var(--text-dim); }
+  /* Hero header */
+  .hero {
+    margin-bottom: 48px;
+  }
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .hero .sub {
+    font-size: 16px;
+    color: var(--text-mute);
+    max-width: 720px;
+    line-height: 1.5;
+  }
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-mute);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  /* Scenario sub-toggle */
+  .sub-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .sub-toggle .label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-right: 12px;
+  }
+  .sub-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-mute);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .sub-btn:hover { color: var(--text); border-color: var(--text-mute); }
+  .sub-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  /* Retention control */
+  .retention-control {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+  }
+  .retention-control label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .retention-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 180px;
+    height: 2px;
+    background: var(--line);
+    outline: none;
+    border-radius: 2px;
+  }
+  .retention-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--accent);
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+  }
+  .retention-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--accent);
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+  }
+  .retention-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 48px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  /* KPI row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+  .kpi {
+    background: var(--bg);
+    padding: 28px 24px;
+  }
+  .kpi .label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .kpi .value {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 8px;
+  }
+  .kpi .value.neutral { color: var(--text); }
+  .kpi .delta {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mute);
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .delta.pos { color: var(--pos); }
+  .kpi .delta.neg { color: var(--neg); }
+  /* Section title */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  /* Chart container */
+  .chart-wrap {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    padding: 32px;
+    height: 380px;
+    position: relative;
+  }
+  .chart-wrap canvas {
+    max-width: 100% !important;
+  }
+  /* Monthly table */
+  .monthly-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+  }
+  .monthly-table th {
+    text-align: right;
+    font-weight: 500;
+    color: var(--text-dim);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .monthly-table th:first-child { text-align: left; }
+  .monthly-table td {
+    text-align: right;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--text);
+  }
+  .monthly-table td:first-child {
+    text-align: left;
+    color: var(--text-mute);
+    font-weight: 500;
+  }
+  .monthly-table tr:last-child td { border-bottom: none; }
+  .monthly-table tr.highlight td { color: var(--accent); font-weight: 600; }
+  /* Two-column grid */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  /* Cost breakdown */
+  .cost-list {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    padding: 28px 32px;
+  }
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 14px;
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-row .label { color: var(--text-mute); }
+  .cost-row .value { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 500; }
+  .cost-row.total {
+    border-top: 1px solid var(--line);
+    border-bottom: none;
+    padding-top: 16px;
+    margin-top: 8px;
+  }
+  .cost-row.total .label { color: var(--text); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; }
+  .cost-row.total .value { color: var(--accent); font-size: 18px; font-weight: 700; }
+  .cost-row.subtotal .label { color: var(--text); font-weight: 600; }
+  .cost-row.subtotal .value { color: var(--text); font-weight: 600; }
+  /* GP waterfall */
+  .waterfall {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    padding: 28px 32px;
+  }
+  .waterfall .bar-wrap {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+  .waterfall .bar {
+    display: flex;
+    height: 56px;
+    width: 100%;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .waterfall .seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--bg);
+    font-variant-numeric: tabular-nums;
+  }
+  .waterfall .seg.sales-comp { background: var(--accent); }
+  .waterfall .seg.remaining { background: var(--text); }
+  .waterfall .legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+    font-size: 12px;
+    color: var(--text-mute);
+  }
+  .waterfall .legend .item { display: flex; align-items: center; gap: 8px; }
+  .waterfall .legend .dot { width: 10px; height: 10px; border-radius: 2px; }
+  .waterfall .legend .dot.sales-comp { background: var(--accent); }
+  .waterfall .legend .dot.remaining { background: var(--text); }
+  /* KPI scorecard */
+  .kpi-scorecard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .kpi-card {
+    background: var(--bg);
+    padding: 24px;
+  }
+  .kpi-card .name {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+  .kpi-card .target {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 8px;
+  }
+  .kpi-card .def {
+    font-size: 12px;
+    color: var(--text-mute);
+    line-height: 1.5;
+  }
+  /* AE business case */
+  .ae-case {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    padding: 32px;
+  }
+  .ae-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .ae-grid .col h3 {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  .ae-grid .col p {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .ae-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 14px;
+  }
+  .ae-row:last-child { border-bottom: none; }
+  .ae-row .l { color: var(--text-mute); }
+  .ae-row .r { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .ae-row.hl .r { color: var(--accent); font-weight: 700; }
+  /* Risks */
+  .risks {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 28px 32px;
+    line-height: 1.7;
+    color: var(--text);
+    font-size: 14px;
+  }
+  .risks p { margin-bottom: 14px; }
+  .risks p:last-child { margin-bottom: 0; }
+  .risks strong { color: var(--accent); font-weight: 600; }
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+  }
+  /* Tab content */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  /* Print styles */
+  @media print {
+    body { background: white; color: black; }
+    .tab-btn, .sub-toggle, .retention-control { display: none; }
+    .tab-content { display: block !important; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Top tag -->
+  <div class="top-tag">
+    <span>HERB AGENCY &nbsp;·&nbsp; CMAAS &nbsp;·&nbsp; 2026 SALES FORECAST</span>
+    <span class="right" id="date-stamp"></span>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>2026 Sales Forecast &amp; Budget</h1>
+    <div class="sub">Forecast horizon: June through December 2026. Starting MRR: $600K. Gross margin: 50%. Monthly gross MRR churn typically runs $10K, ranges from $0 in strong months to $20K in soft ones. CS retention is holding. Closing capacity is the lever.</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="solo">Chris Solo</button>
+    <button class="tab-btn" data-tab="ae">Chris + New AE</button>
+  </div>
+
+  <!-- ============ TAB 1: CHRIS SOLO ============ -->
+  <div class="tab-content active" id="tab-solo">
+
+    <div class="sub-toggle">
+      <span class="label">New MRR / month</span>
+      <button class="sub-btn" data-mrr="30000" data-tab="solo">$30K Floor</button>
+      <button class="sub-btn active" data-mrr="40000" data-tab="solo">$40K Target</button>
+      <button class="sub-btn" data-mrr="50000" data-tab="solo">$50K Stretch</button>
+      <div class="retention-control">
+        <label for="retention-solo">Monthly MRR Churn</label>
+        <input type="range" min="0" max="25" value="10" step="1" class="retention-slider" id="retention-solo">
+        <span class="retention-value" id="retention-solo-val">$10K</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="label">December Exit MRR</div>
+        <div class="value" id="solo-dec-mrr">$660K</div>
+        <div class="delta" id="solo-dec-delta">+$60K vs May start</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Annualized ARR</div>
+        <div class="value" id="solo-arr">$7.92M</div>
+        <div class="delta">December MRR × 12</div>
+      </div>
+      <div class="kpi">
+        <div class="label">7-Month Recognized Rev</div>
+        <div class="value neutral" id="solo-rec-rev">$4.84M</div>
+        <div class="delta">June through December</div>
+      </div>
+      <div class="kpi">
+        <div class="label">GP Remaining After Sales</div>
+        <div class="value neutral" id="solo-gp-rem">$2.13M</div>
+        <div class="delta" id="solo-comp-pct">Sales comp 11.7% of GP</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Monthly MRR Trajectory</div>
+      <div class="chart-wrap">
+        <canvas id="chart-solo"></canvas>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Month by Month Detail</div>
+      <table class="monthly-table" id="table-solo">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Starting MRR</th>
+            <th>Retained</th>
+            <th>New MRR</th>
+            <th>Ending MRR</th>
+            <th>Recognized Rev</th>
+            <th>GP @ 50%</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sales Team Cost &amp; GP Allocation</div>
+      <div class="two-col">
+        <div class="cost-list" id="cost-solo"></div>
+        <div class="waterfall" id="waterfall-solo"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sales Team KPIs to Execute Against</div>
+      <div class="kpi-scorecard">
+        <div class="kpi-card">
+          <div class="name">New MRR Closed / Month</div>
+          <div class="target">$40K Target</div>
+          <div class="def">Floor $30K, stretch $50K. Average deal size $5,999 (Full Service tier).</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">SDR Meetings Sat / Month</div>
+          <div class="target">40</div>
+          <div class="def">4 SDRs × 10 sat meetings. Quality filter on ICP fit before counting.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">Sat-to-Close Rate</div>
+          <div class="target">20%</div>
+          <div class="def">Currently around 15 to 17 percent. Pushing close rate is highest leverage.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">Monthly MRR Churn</div>
+          <div class="target">&lt; $10K</div>
+          <div class="def">Typical month runs $10K, some months $0. CS is holding. Hold the line.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">Sales Comp as % GP</div>
+          <div class="target">&lt; 15%</div>
+          <div class="def">Lean by SaaS and agency norms. Headroom to add a closer.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">Cycle Time Discovery to Close</div>
+          <div class="target">3 to 4 weeks</div>
+          <div class="def">MSO deals run 6 to 10 weeks. Nurture stage flag at 14 days.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Where This Model Breaks</div>
+      <div class="risks">
+        <p><strong>Single-closer risk.</strong> Chris carries the entire closing capacity in this scenario. Any week off, illness, or stretch of bad meetings creates a forecast gap with no redundancy. This is the strongest argument for adding an AE.</p>
+        <p><strong>Churn assumption is the variable to watch.</strong> The forecast holds if monthly gross MRR churn stays at $10K or below. A jump to $20K still produces growth, but it cuts December exit MRR by roughly $70K. CS performance through year-end is the trustline.</p>
+        <p><strong>Sales comp is not the leakage.</strong> Across every scenario in this band, sales comp stays under 15 percent of gross profit. Investment dollars belong in expansion and closing capacity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB 2: CHRIS + AE ============ -->
+  <div class="tab-content" id="tab-ae">
+
+    <div class="sub-toggle">
+      <span class="label">Combined New MRR / month</span>
+      <button class="sub-btn" data-mrr="50000" data-tab="ae">$50K Floor</button>
+      <button class="sub-btn active" data-mrr="60000" data-tab="ae">$60K Target</button>
+      <button class="sub-btn" data-mrr="70000" data-tab="ae">$70K Stretch</button>
+      <div class="retention-control">
+        <label for="retention-ae">Monthly MRR Churn</label>
+        <input type="range" min="0" max="25" value="10" step="1" class="retention-slider" id="retention-ae">
+        <span class="retention-value" id="retention-ae-val">$10K</span>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="label">December Exit MRR</div>
+        <div class="value" id="ae-dec-mrr">$782K</div>
+        <div class="delta" id="ae-dec-delta">+$182K vs May start</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Annualized ARR</div>
+        <div class="value" id="ae-arr">$9.39M</div>
+        <div class="delta">December MRR × 12</div>
+      </div>
+      <div class="kpi">
+        <div class="label">7-Month Recognized Rev</div>
+        <div class="value neutral" id="ae-rec-rev">$5.06M</div>
+        <div class="delta">June through December</div>
+      </div>
+      <div class="kpi">
+        <div class="label">GP Remaining After Sales</div>
+        <div class="value neutral" id="ae-gp-rem">$2.17M</div>
+        <div class="delta" id="ae-comp-pct">Sales comp 14.2% of GP</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Monthly MRR Trajectory</div>
+      <div class="chart-wrap">
+        <canvas id="chart-ae"></canvas>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Month by Month Detail</div>
+      <table class="monthly-table" id="table-ae">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Starting MRR</th>
+            <th>Retained</th>
+            <th>New MRR</th>
+            <th>Ending MRR</th>
+            <th>Recognized Rev</th>
+            <th>GP @ 50%</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sales Team Cost &amp; GP Allocation</div>
+      <div class="two-col">
+        <div class="cost-list" id="cost-ae"></div>
+        <div class="waterfall" id="waterfall-ae"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">The AE Business Case</div>
+      <div class="ae-case">
+        <div class="ae-grid">
+          <div class="col">
+            <h3>Role &amp; Structure</h3>
+            <p>Closer-only role reporting to Chris. Takes inbound and outbound pipeline Chris and the SDRs feed. No team lead responsibility. Ramp to $20K MRR / month by month 5.</p>
+            <div class="ae-row"><span class="l">Base salary</span><span class="r">$70,000</span></div>
+            <div class="ae-row"><span class="l">Commission tier (high)</span><span class="r">8 / 8 / 12 (28%)</span></div>
+            <div class="ae-row"><span class="l">Commission tier (low)</span><span class="r">4 / 4 / 6 (14%)</span></div>
+            <div class="ae-row"><span class="l">High-tier threshold</span><span class="r">$15K MRR / month</span></div>
+            <div class="ae-row hl"><span class="l">Year-1 fully loaded cost</span><span class="r">~$112,000</span></div>
+          </div>
+          <div class="col">
+            <h3>Economics</h3>
+            <p>At $20K MRR / month steady state across 9 ramped months, the AE books roughly $170K in new MRR over year 1. At a 10.5-month average client life and 50 percent gross margin, that's approximately $890K in lifetime gross profit.</p>
+            <div class="ae-row"><span class="l">Year-1 new MRR booked</span><span class="r">~$170,000</span></div>
+            <div class="ae-row"><span class="l">Year-1 lifetime GP</span><span class="r">~$890,000</span></div>
+            <div class="ae-row"><span class="l">Comp as % of LTV GP</span><span class="r">~12.6%</span></div>
+            <div class="ae-row hl"><span class="l">Breakeven month</span><span class="r">Month 5</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sales Team KPIs with AE Onboard</div>
+      <div class="kpi-scorecard">
+        <div class="kpi-card">
+          <div class="name">Combined New MRR / Month</div>
+          <div class="target">$60K Target</div>
+          <div class="def">Chris $30 to 40K, AE ramping to $20K. Floor $50K, stretch $70K.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">AE Ramp Benchmark</div>
+          <div class="target">$20K by Month 5</div>
+          <div class="def">Month 1: shadow. Month 3: own deals. Month 5: full quota carry.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">SDR Meetings Sat / Month</div>
+          <div class="target">40 minimum</div>
+          <div class="def">Pipeline needs to feed two closers. May warrant fifth SDR by Q4.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">Monthly MRR Churn</div>
+          <div class="target">&lt; $10K</div>
+          <div class="def">CS is holding the line. Hold it while sales capacity doubles.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">Sales Comp as % GP</div>
+          <div class="target">&lt; 15%</div>
+          <div class="def">Holds under target across all scenarios with AE onboard.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="name">December Exit ARR</div>
+          <div class="target">$11M+</div>
+          <div class="def">At $60K combined and typical $10K churn. Stretch case clears $12M.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Where This Model Breaks</div>
+      <div class="risks">
+        <p><strong>The AE might not ramp.</strong> Industry standard is 25 to 30 percent of new AEs miss ramp in their first 6 months. A 90-day check-in with clear PIP triggers is non-negotiable. Forecast assumes a normal ramp.</p>
+        <p><strong>Cannibalization risk.</strong> Handing warm inbound to the AE means Chris closes harder deals. Personal close rate may dip in months 1 to 3 before AE is autonomous. Plan the optics around it.</p>
+        <p><strong>Churn doubling cuts the upside in half.</strong> The AE adds revenue input. If monthly churn climbs from $10K to $20K, December exit MRR drops by roughly $70K. The AE hire pays for itself in either case but the growth story dulls. CS performance still matters even when sales scales.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Built for executive review &nbsp;·&nbsp; Chris Douglas &nbsp;·&nbsp; Director, Sales &amp; Strategy</span>
+    <span>chris@herb.co &nbsp;·&nbsp; (905) 806-2100</span>
+  </div>
+
+</div>
+
+<script>
+// ============ CONSTANTS ============
+const STARTING_MRR = 600000;
+const GROSS_MARGIN = 0.50;
+const MONTHS = ['Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const FORECAST_MONTHS = 7;
+
+// Chris comp
+const CHRIS_BASE_ANNUAL = 109500;
+const CHRIS_BASE_MONTHLY = CHRIS_BASE_ANNUAL / 12;
+const CHRIS_COMM_HIGH = 0.35;  // 10/10/15
+const CHRIS_COMM_LOW = 0.175;  // 5/5/7.5
+const CHRIS_THRESHOLD = 20000;
+
+// SDR comp
+const SDR_COUNT = 4;
+const SDR_BASE_MONTHLY = 3000;
+const SDR_MTG_BONUS = 50;
+const SDR_MTGS_PER_MONTH = 10;
+const SDR_COMM = 0.115;
+
+// AE comp
+const AE_BASE_ANNUAL = 70000;
+const AE_BASE_MONTHLY = AE_BASE_ANNUAL / 12;
+const AE_COMM_HIGH = 0.28;  // 8/8/12
+const AE_COMM_LOW = 0.14;   // 4/4/6
+const AE_THRESHOLD = 15000;
+
+// State
+const state = {
+  solo: { mrr: 40000, churn: 10000 },
+  ae:   { mrr: 60000, churn: 10000 }
+};
+
+// ============ MATH ============
+function runForecast(newMrr, churn) {
+  let current = STARTING_MRR;
+  const rows = [];
+  for (let i = 0; i < FORECAST_MONTHS; i++) {
+    const starting = current;
+    const retained = Math.max(0, starting - churn);
+    const ending = retained + newMrr;
+    const recRev = ending;
+    const gp = recRev * GROSS_MARGIN;
+    rows.push({ month: MONTHS[i], starting, retained, newMrr, ending, recRev, gp, churned: starting - retained });
+    current = ending;
+  }
+  const totalRecRev = rows.reduce((s, r) => s + r.recRev, 0);
+  const totalGp = totalRecRev * GROSS_MARGIN;
+  return { rows, totalRecRev, totalGp, endingMrr: rows[rows.length-1].ending };
+}
+
+function computeComp(newMrr, includeAE) {
+  const chrisShare = includeAE ? Math.min(newMrr - 20000, newMrr * 0.6) : newMrr;
+  // For Chris+AE, assume Chris keeps ~$30-40K of the combined, AE handles remainder.
+  // Simpler split: Chris carries first $40K of combined, AE carries the rest.
+  let chrisMrr, aeMrr;
+  if (includeAE) {
+    chrisMrr = Math.min(newMrr, 40000);
+    aeMrr = Math.max(0, newMrr - chrisMrr);
+  } else {
+    chrisMrr = newMrr;
+    aeMrr = 0;
+  }
+
+  // Chris commission
+  const chrisRate = chrisMrr >= CHRIS_THRESHOLD ? CHRIS_COMM_HIGH : CHRIS_COMM_LOW;
+  const chrisBase = CHRIS_BASE_MONTHLY * FORECAST_MONTHS;
+  const chrisComm = chrisMrr * chrisRate * FORECAST_MONTHS;
+  const chrisTotal = chrisBase + chrisComm;
+
+  // SDR
+  const sdrBase = SDR_BASE_MONTHLY * SDR_COUNT * FORECAST_MONTHS;
+  const sdrMtg = SDR_MTG_BONUS * SDR_MTGS_PER_MONTH * SDR_COUNT * FORECAST_MONTHS;
+  const sdrComm = newMrr * SDR_COMM * FORECAST_MONTHS;
+  const sdrTotal = sdrBase + sdrMtg + sdrComm;
+
+  // AE
+  let aeBase = 0, aeComm = 0, aeTotal = 0;
+  if (includeAE) {
+    aeBase = AE_BASE_MONTHLY * FORECAST_MONTHS;
+    const aeRate = aeMrr >= AE_THRESHOLD ? AE_COMM_HIGH : AE_COMM_LOW;
+    aeComm = aeMrr * aeRate * FORECAST_MONTHS;
+    aeTotal = aeBase + aeComm;
+  }
+
+  const grandTotal = chrisTotal + sdrTotal + aeTotal;
+  return { chrisMrr, aeMrr, chrisBase, chrisComm, chrisTotal, sdrBase, sdrMtg, sdrComm, sdrTotal, aeBase, aeComm, aeTotal, grandTotal };
+}
+
+// ============ FORMATTERS ============
+const fmtMoney = n => '$' + Math.round(n).toLocaleString();
+const fmtMoneyK = n => '$' + Math.round(n/1000).toLocaleString() + 'K';
+const fmtMoneyM = n => '$' + (n/1000000).toFixed(2) + 'M';
+const fmtDelta = n => (n >= 0 ? '+' : '') + fmtMoneyK(n);
+const fmtPct = n => (n*100).toFixed(1) + '%';
+
+// ============ RENDERERS ============
+function renderTab(tab) {
+  const s = state[tab];
+  const includeAE = (tab === 'ae');
+  const forecast = runForecast(s.mrr, s.churn);
+  const comp = computeComp(s.mrr, includeAE);
+
+  // KPIs
+  const decMrr = forecast.endingMrr;
+  const delta = decMrr - STARTING_MRR;
+  document.getElementById(tab + '-dec-mrr').textContent = fmtMoneyK(decMrr);
+  const deltaEl = document.getElementById(tab + '-dec-delta');
+  deltaEl.textContent = fmtDelta(delta) + ' vs May start';
+  deltaEl.className = 'delta ' + (delta >= 0 ? 'pos' : 'neg');
+
+  document.getElementById(tab + '-arr').textContent = fmtMoneyM(decMrr * 12);
+  document.getElementById(tab + '-rec-rev').textContent = fmtMoneyM(forecast.totalRecRev);
+
+  const gpRemaining = forecast.totalGp - comp.grandTotal;
+  document.getElementById(tab + '-gp-rem').textContent = fmtMoneyM(gpRemaining);
+  document.getElementById(tab + '-comp-pct').textContent = 'Sales comp ' + fmtPct(comp.grandTotal / forecast.totalGp) + ' of GP';
+
+  // Monthly table
+  const tbody = document.querySelector('#table-' + tab + ' tbody');
+  tbody.innerHTML = '';
+  forecast.rows.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    if (i === forecast.rows.length - 1) tr.classList.add('highlight');
+    tr.innerHTML = `
+      <td>${row.month}</td>
+      <td>${fmtMoneyK(row.starting)}</td>
+      <td>${fmtMoneyK(row.retained)}</td>
+      <td>${fmtMoneyK(row.newMrr)}</td>
+      <td>${fmtMoneyK(row.ending)}</td>
+      <td>${fmtMoneyK(row.recRev)}</td>
+      <td>${fmtMoneyK(row.gp)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Cost list
+  const costEl = document.getElementById('cost-' + tab);
+  let costHtml = '';
+  costHtml += `<div class="cost-row"><span class="label">Chris base (7 mo)</span><span class="value">${fmtMoney(comp.chrisBase)}</span></div>`;
+  costHtml += `<div class="cost-row"><span class="label">Chris commission</span><span class="value">${fmtMoney(comp.chrisComm)}</span></div>`;
+  costHtml += `<div class="cost-row subtotal"><span class="label">Chris total</span><span class="value">${fmtMoney(comp.chrisTotal)}</span></div>`;
+  costHtml += `<div class="cost-row"><span class="label">SDR base (4 × 7 mo)</span><span class="value">${fmtMoney(comp.sdrBase)}</span></div>`;
+  costHtml += `<div class="cost-row"><span class="label">SDR meeting bonus</span><span class="value">${fmtMoney(comp.sdrMtg)}</span></div>`;
+  costHtml += `<div class="cost-row"><span class="label">SDR commission</span><span class="value">${fmtMoney(comp.sdrComm)}</span></div>`;
+  costHtml += `<div class="cost-row subtotal"><span class="label">SDR team total</span><span class="value">${fmtMoney(comp.sdrTotal)}</span></div>`;
+  if (includeAE) {
+    costHtml += `<div class="cost-row"><span class="label">AE base (7 mo)</span><span class="value">${fmtMoney(comp.aeBase)}</span></div>`;
+    costHtml += `<div class="cost-row"><span class="label">AE commission</span><span class="value">${fmtMoney(comp.aeComm)}</span></div>`;
+    costHtml += `<div class="cost-row subtotal"><span class="label">AE total</span><span class="value">${fmtMoney(comp.aeTotal)}</span></div>`;
+  }
+  costHtml += `<div class="cost-row total"><span class="label">Total sales comp</span><span class="value">${fmtMoney(comp.grandTotal)}</span></div>`;
+  costEl.innerHTML = costHtml;
+
+  // Waterfall
+  const wEl = document.getElementById('waterfall-' + tab);
+  const salesPct = comp.grandTotal / forecast.totalGp;
+  const remPct = 1 - salesPct;
+  wEl.innerHTML = `
+    <div class="section-title" style="border:none; padding:0; margin-bottom:8px;">GP Allocation (7 mo)</div>
+    <div style="font-size:13px; color: var(--text-mute); margin-bottom: 4px;">Total gross profit: <span style="color: var(--text); font-weight: 600;">${fmtMoneyM(forecast.totalGp)}</span></div>
+    <div class="bar-wrap">
+      <div class="bar">
+        <div class="seg sales-comp" style="width: ${salesPct*100}%;">${fmtPct(salesPct)}</div>
+        <div class="seg remaining" style="width: ${remPct*100}%;">${fmtPct(remPct)}</div>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="item"><span class="dot sales-comp"></span>Sales comp ${fmtMoney(comp.grandTotal)}</div>
+      <div class="item"><span class="dot remaining"></span>Remaining to company ${fmtMoney(forecast.totalGp - comp.grandTotal)}</div>
+    </div>
+  `;
+
+  // Chart
+  renderChart(tab, forecast);
+}
+
+let charts = {};
+function renderChart(tab, forecast) {
+  const ctx = document.getElementById('chart-' + tab).getContext('2d');
+  const labels = ['May', ...MONTHS];
+  const data = [STARTING_MRR, ...forecast.rows.map(r => r.ending)];
+
+  if (charts[tab]) charts[tab].destroy();
+
+  charts[tab] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'MRR',
+          data,
+          borderColor: '#C5F048',
+          backgroundColor: 'rgba(197, 240, 72, 0.08)',
+          borderWidth: 2.5,
+          tension: 0.25,
+          fill: true,
+          pointBackgroundColor: '#C5F048',
+          pointBorderColor: '#1A1A1A',
+          pointBorderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7
+        },
+        {
+          label: 'Starting baseline',
+          data: Array(labels.length).fill(STARTING_MRR),
+          borderColor: 'rgba(154,154,154,0.4)',
+          borderWidth: 1,
+          borderDash: [4, 4],
+          pointRadius: 0,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1A1A',
+          borderColor: '#333',
+          borderWidth: 1,
+          titleColor: '#C5F048',
+          bodyColor: '#F5F5F5',
+          padding: 12,
+          titleFont: { family: 'Inter', size: 12, weight: '600' },
+          bodyFont: { family: 'Inter', size: 13 },
+          callbacks: {
+            label: (ctx) => 'MRR: ' + fmtMoney(ctx.parsed.y)
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#9A9A9A', font: { family: 'Inter', size: 12 } }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: {
+            color: '#9A9A9A',
+            font: { family: 'Inter', size: 12 },
+            callback: (v) => '$' + (v/1000) + 'K'
+          }
+        }
+      }
+    }
+  });
+}
+
+// ============ EVENT HANDLERS ============
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tab));
+    renderTab(tab);
+  });
+});
+
+document.querySelectorAll('.sub-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    const mrr = parseInt(btn.dataset.mrr);
+    state[tab].mrr = mrr;
+    document.querySelectorAll(`.sub-btn[data-tab="${tab}"]`).forEach(b => b.classList.toggle('active', b === btn));
+    renderTab(tab);
+  });
+});
+
+document.getElementById('retention-solo').addEventListener('input', (e) => {
+  state.solo.churn = parseInt(e.target.value) * 1000;
+  document.getElementById('retention-solo-val').textContent = '$' + e.target.value + 'K';
+  renderTab('solo');
+});
+document.getElementById('retention-ae').addEventListener('input', (e) => {
+  state.ae.churn = parseInt(e.target.value) * 1000;
+  document.getElementById('retention-ae-val').textContent = '$' + e.target.value + 'K';
+  renderTab('ae');
+});
+
+// Date stamp
+document.getElementById('date-stamp').textContent = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+// Initial render
+renderTab('solo');
+renderTab('ae');
+</script>
+</body>
+</html>
